@@ -1,0 +1,13 @@
+FROM cypress/included:15.11.0
+
+WORKDIR /app
+
+# Copia apenas os arquivos de dependência primeiro (cache de layer)
+COPY package.json ./
+
+RUN npm install --prefer-offline
+
+# Copia o restante do projeto
+COPY . .
+
+CMD ["npx", "cypress", "run"]
