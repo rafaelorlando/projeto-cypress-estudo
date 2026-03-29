@@ -29,7 +29,8 @@ pipeline {
                 sh '''
                     docker compose run --rm \
                         -e CYPRESS_BASE_URL=$CYPRESS_BASE_URL \
-                        cypress
+                        -e ALLURE_RESULTS_PATH=allure-results \
+                        cypress npx cypress run --env allure=true
                 '''
             }
         }
@@ -41,12 +42,18 @@ pipeline {
 
             archiveArtifacts artifacts: 'cypress/videos/**/*.mp4', allowEmptyArchive: true
             archiveArtifacts artifacts: 'cypress/screenshots/**/*.png', allowEmptyArchive: true
+
+            allure([
+                includeProperties: false,
+                jdk: '',
+                results: [[path: 'allure-results']]
+            ])
         }
         success {
             echo 'Testes concluídos com sucesso!'
         }
         failure {
-            echo 'Falha nos testes. Verifique os artefatos (videos/screenshots).'
+            echo 'Falha nos testes. Verifique o Allure Report.'
         }
     }
 }

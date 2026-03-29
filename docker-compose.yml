@@ -10,4 +10,5 @@ services:
     volumes:
       - ./cypress/videos:/app/cypress/videos
       - ./cypress/screenshots:/app/cypress/screenshots
+      - ./allure-results:/app/allure-results
     shm_size: '1gb'    # crítico: evita crash do Chrome no container
